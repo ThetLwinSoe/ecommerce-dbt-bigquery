@@ -1,0 +1,23 @@
+# dbt artifacts
+target/
+dbt_packages/
+logs/
+*.log
+
+# Python
+__pycache__/
+*.pyc
+.env
+venv/
+.venv/
+
+# Credentials — NEVER commit these
+*.json
+service_account*.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/settings.json

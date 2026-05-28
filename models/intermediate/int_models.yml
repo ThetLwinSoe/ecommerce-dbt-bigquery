@@ -1,0 +1,39 @@
+version: 2
+
+models:
+  - name: int_customer_transactions
+    description: >
+      Core enriched fact table joining basket transactions with customer demographics.
+      Used as the foundation for all mart-layer models.
+      Grain: one row per basket transaction (customer + product + date).
+    columns:
+      - name: basket_id
+        description: "Surrogate key from stg_basket_details"
+        tests:
+          - not_null
+      - name: customer_id
+        tests:
+          - not_null
+      - name: basket_date
+        tests:
+          - not_null
+      - name: has_customer_profile
+        description: "True if this customer_id exists in customer_details"
+
+  - name: int_customer_rfm_base
+    description: >
+      Per-customer RFM base metrics before scoring.
+      Recency = days since last purchase; Frequency = distinct purchase days;
+      Monetary = total items purchased.
+    columns:
+      - name: customer_id
+        description: "Primary grain — one row per customer"
+        tests:
+          - unique
+          - not_null
+      - name: recency_days
+        description: "Days since last purchase (from snapshot date 2019-06-19)"
+      - name: frequency
+        description: "Number of distinct purchase dates"
+      - name: monetary_value
+        description: "Total basket items purchased (volume proxy — no price data available)"

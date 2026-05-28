@@ -1,0 +1,24 @@
+ecommerce_dbt:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      method: oauth                    # Uses gcloud auth — no key file needed
+      project: sinuous-anvil-217006     # 🔴 Replace with your GCP project ID
+      dataset: ecommerce_dev           # Dev dataset — created automatically
+      threads: 4
+      timeout_seconds: 300
+      location: asia-southeast3                     # Change to EU if your BQ dataset is in EU
+      priority: interactive
+      retries: 1
+
+    prod:
+      type: bigquery
+      method: oauth
+      project: sinuous-anvil-217006     # 🔴 Replace with your GCP project ID
+      dataset: ecommerce_prod
+      threads: 4
+      timeout_seconds: 300
+      location: asia-southeast3
+      priority: interactive
+      retries: 1

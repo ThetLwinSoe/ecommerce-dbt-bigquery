@@ -1,0 +1,48 @@
+version: 2
+
+sources:
+  - name: ecommerce_raw
+    description: "Raw e-commerce data loaded from CSV files into BigQuery"
+    database: sinuous-anvil-217006      # 🔴 Replace with your GCP project ID
+    schema: ecommerce_raw              # The dataset where you loaded the CSVs
+    tables:
+      - name: basket_details
+        description: >
+          Transaction-level data capturing each customer's purchase basket.
+          One row = one customer buying one product on one date.
+        columns:
+          - name: customer_id
+            description: "Unique identifier for the customer"
+            tests:
+              - not_null
+          - name: product_id
+            description: "Unique identifier for the product"
+            tests:
+              - not_null
+          - name: basket_date
+            description: "Date when the purchase was made (YYYY-MM-DD)"
+            tests:
+              - not_null
+          - name: basket_count
+            description: "Number of items in the basket for this product"
+            tests:
+              - not_null
+
+      - name: customer_details
+        description: >
+          Customer demographic data. Contains age and tenure information
+          which may have data quality issues (outliers, nulls).
+        columns:
+          - name: customer_id
+            description: "Unique identifier for the customer"
+            tests:
+              - not_null
+              - unique
+          - name: sex
+            description: "Customer gender — Male, Female, UNKNOWN, or kvkktalepsilindi (GDPR deletion flag)"
+          - name: customer_age
+            description: "Customer age in years — requires cleaning (contains outliers)"
+          - name: tenure
+            description: "Number of days the customer has been active"
+            tests:
+              - not_null

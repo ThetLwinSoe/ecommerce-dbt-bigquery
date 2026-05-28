@@ -1,0 +1,74 @@
+version: 2
+
+models:
+  - name: mart_sales_daily
+    description: >
+      Daily sales metrics including transaction counts, unique customers/products,
+      total items, rolling 7-day averages, and cumulative totals.
+      Primary mart for time-series dashboards and trend analysis.
+    columns:
+      - name: basket_date
+        description: "Date of sales activity"
+        tests:
+          - unique
+          - not_null
+      - name: total_transactions
+        tests:
+          - not_null
+      - name: rolling_7d_transactions
+        description: "7-day rolling average of daily transaction count"
+
+  - name: mart_sales_weekly
+    description: >
+      Weekly sales roll-up with week-over-week (WoW) change calculations.
+    columns:
+      - name: purchase_week
+        description: "ISO week number"
+        tests:
+          - not_null
+
+  - name: mart_customer_segments
+    description: >
+      Customer-level RFM (Recency, Frequency, Monetary) scoring and segmentation.
+      Scores are 1-5 quintile-based. Segments include Champion, Loyal, At Risk, etc.
+    columns:
+      - name: customer_id
+        description: "Primary key"
+        tests:
+          - unique
+          - not_null
+      - name: rfm_segment
+        description: "Behavioural segment: Champion, Loyal Customer, Promising, Potential Loyalist, At Risk, Lost, Needs Attention"
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                - 'Champion'
+                - 'Loyal Customer'
+                - 'Promising'
+                - 'Potential Loyalist'
+                - 'At Risk'
+                - 'Lost'
+                - 'Needs Attention'
+
+  - name: mart_customer_demographics
+    description: >
+      Purchase behaviour aggregated by demographic dimension (gender, age band, tenure).
+      Useful for understanding which customer groups drive volume.
+
+  - name: mart_product_performance
+    description: >
+      Product-level performance metrics including volume, buyer reach, and tier classification.
+      Hero products = top 10% by volume; Strong = next 20%.
+    columns:
+      - name: product_id
+        description: "Primary key"
+        tests:
+          - unique
+          - not_null
+
+  - name: mart_product_affinity
+    description: >
+      Product co-purchase pairs with support %, lift score, and affinity label.
+      Only pairs with 10+ co-purchases are included.
+      Lift > 2 = Strong Affinity.
