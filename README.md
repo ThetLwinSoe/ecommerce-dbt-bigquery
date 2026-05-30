@@ -317,7 +317,7 @@ ecommerce_dbt/
 ## Author
 
 Built as a portfolio project to demonstrate dbt + BigQuery data engineering skills.  
-Connect on [LinkedIn](https://www.linkedin.com/in/YOUR_PROFILE) 🔗
+Connect on [LinkedIn](https://www.linkedin.com/in/thetlwin/) 🔗
 
 ---
 
